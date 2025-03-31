@@ -5,7 +5,7 @@ function recordStats() {
   // 1. Replace with the API endpoint for your repository’s releases
   var url = "https://api.github.com/repos/{owner}/{repo}/releases";
   
-  // 2. Replade with your GitHub token to access private repos
+  // 2. Replace with your GitHub token to access private repos
   var token = "YOUR_GITHUB_TOKEN";  
   var options = {
     'muteHttpExceptions': true,
