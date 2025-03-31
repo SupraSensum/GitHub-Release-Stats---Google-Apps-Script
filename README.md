@@ -25,8 +25,8 @@ This repository contains a Google Apps Script project that automatically pulls G
 3. **Set Up Script Properties:**
    - In the Apps Script editor, click on **File > Project properties > Script properties**.
    - Add the following properties:
-     - `SPREADSHEET_ID`: Your spreadsheet ID (for example, if your sheet URL is `https://docs.google.com/spreadsheets/d/1fOJ_wSJ-RF_beKMSWWf7DKYOrNjmjRWSJZ12vOiANpY/edit`, then the ID is `1fOJ_wSJ-RF_beKMSWWf7DKYOrNjmjRWSJZ12vOiANpY`).
-     - `GITHUB_API_URL`: The GitHub API endpoint for releases (e.g., `https://api.github.com/repos/Rocketman-Tech/rcc/releases`).
+     - `SPREADSHEET_ID`: Your spreadsheet ID (for example, if your sheet URL is `https://docs.google.com/spreadsheets/d/1fOJ_wSJ-RF_THIS_IS_FAKE_rNjmjRWSJZ12vOiANpY/edit`, then the ID is `1fOJ_wSJ-RF_THIS_IS_FAKE_rNjmjRWSJZ12vOiANpY`).
+     - `GITHUB_API_URL`: The GitHub API endpoint for releases (e.g., `https://api.github.com/repos/swiftDialog/swiftDialog/releases`).
      - `GITHUB_TOKEN`: Your GitHub Personal Access Token with the appropriate permissions.
 
 4. **Set Up a Time-based Trigger:**
