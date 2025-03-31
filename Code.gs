@@ -1,12 +1,16 @@
 function recordStats() {
-  // 0. Replace with your spreadsheet ID
-  var spreadsheetId = "YOUR_SPREADSHEET_ID";
-
-  // 1. Replace with the API endpoint for your repository’s releases
-  var url = "https://api.github.com/repos/{owner}/{repo}/releases";
+  // Get values from Script Properties
+  var props = PropertiesService.getScriptProperties();
+  var spreadsheetId = props.getProperty("SPREADSHEET_ID");
+  var url = props.getProperty("GITHUB_API_URL");
+  var token = props.getProperty("GITHUB_TOKEN");
   
-  // 2. Replace with your GitHub token to access private repos
-  var token = "YOUR_GITHUB_TOKEN";  
+  if (!spreadsheetId || !url || !token) {
+    Logger.log("Missing one or more script properties. Please set SPREADSHEET_ID, GITHUB_API_URL, and GITHUB_TOKEN.");
+    return;
+  }
+  
+  // Set up fetch options with proper headers
   var options = {
     'muteHttpExceptions': true,
     'headers': {
@@ -15,29 +19,39 @@ function recordStats() {
     }
   };
   
-  // 3. Fetch data from GitHub’s Releases API
+  // Fetch data from GitHub Releases API
   var response = UrlFetchApp.fetch(url, options);
-  
-  // 4. Handle non-200 responses
   if (response.getResponseCode() !== 200) {
     Logger.log("Error fetching releases: " + response.getContentText());
     return;
   }
   
-  // 5. Parse JSON
+  // Parse JSON data
   var json = response.getContentText();
   var releases = JSON.parse(json);
   Logger.log("Fetched %d releases", releases.length);
   
-  // 6. Open the spreadsheet explicitly
+  // Open the spreadsheet by ID
   var ss = SpreadsheetApp.openById(spreadsheetId);
+  
+  // Ensure the Versions sheet exists; create it if not
   var versionsSheet = ss.getSheetByName("Versions");
+  if (!versionsSheet) {
+    versionsSheet = ss.insertSheet("Versions");
+    Logger.log("Versions sheet not found. Created new sheet 'Versions'.");
+  }
+  
+  // Ensure the Total sheet exists; create it if not
   var mainSheet = ss.getSheetByName("Total");
-
-  // Get full timestamp (UTC)
+  if (!mainSheet) {
+    mainSheet = ss.insertSheet("Total");
+    Logger.log("Total sheet not found. Created new sheet 'Total'.");
+  }
+  
+  // Get full timestamp (UTC) in ISO format
   var timestamp = Utilities.formatDate(new Date(), "GMT", "yyyy-MM-dd'T'HH:mm:ss'Z'");
   
-  // 7. Loop through releases and assets
+  // Loop through releases and assets; record download counts
   var totalDownloads = 0;
   for (var i = 0; i < releases.length; i++) {
     for (var j = 0; j < releases[i].assets.length; j++) {
@@ -60,7 +74,7 @@ function recordStats() {
     }
   }
   
-  // 8. Log total downloads and append to the Total sheet
+  // Log total downloads and append to the Total sheet
   Logger.log("Total downloads: %d", totalDownloads);
   mainSheet.appendRow([
     timestamp,
