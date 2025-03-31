@@ -1,8 +1,11 @@
 function recordStats() {
-  // 1. API endpoint for your repository’s releases
+  // 0. Replace with your spreadsheet ID
+  var spreadsheetId = "YOUR_SPREADSHEET_ID";
+
+  // 1. Replace with the API endpoint for your repository’s releases
   var url = "https://api.github.com/repos/{owner}/{repo}/releases";
   
-  // 2. Provide a User-Agent and token to access private repos
+  // 2. Replade with your GitHub token to access private repos
   var token = "YOUR_GITHUB_TOKEN";  
   var options = {
     'muteHttpExceptions': true,
@@ -27,7 +30,6 @@ function recordStats() {
   Logger.log("Fetched %d releases", releases.length);
   
   // 6. Open the spreadsheet explicitly
-  var spreadsheetId = "YOUR_SPREADSHEET_ID";
   var ss = SpreadsheetApp.openById(spreadsheetId);
   var versionsSheet = ss.getSheetByName("Versions");
   var mainSheet = ss.getSheetByName("Total");
